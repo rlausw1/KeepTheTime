@@ -17,6 +17,7 @@ import com.facebook.*
 import com.facebook.login.LoginManager
 
 import com.facebook.login.widget.LoginButton
+import com.kakao.sdk.user.UserApiClient
 import org.json.JSONObject
 import java.util.*
 
@@ -36,6 +37,23 @@ class LoginActivity : BaseActivity() {
     }
 
     override fun setupEvents() {
+
+        binding.kakaoLoginBtn.setOnClickListener {
+
+//            카카오계정으로 로그인
+
+            UserApiClient.instance.loginWithKakaoAccount(mContext) { token, error ->
+                if (error != null) {
+                    Log.e("카카오로그인", "로그인 실패", error)
+                }
+                else if (token != null) {
+                    Log.i("카카오로그인", "로그인 성공 ${token.accessToken}")
+                }
+            }
+
+        }
+
+
 
 //        페북 로그인 버튼 클릭 이벤트
         callbackManager = CallbackManager.Factory.create();
