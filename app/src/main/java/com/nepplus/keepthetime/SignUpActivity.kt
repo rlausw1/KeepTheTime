@@ -3,9 +3,11 @@ package com.nepplus.keepthetime
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.nepplus.keepthetime.databinding.ActivitySignUpBinding
 import com.nepplus.keepthetime.datas.BasicResponse
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,8 +36,25 @@ class SignUpActivity : BaseActivity() {
                     response: Response<BasicResponse>
                 ) {
 
-                    val basicResponse = response.body()!!
-                    Log.d("서버 메서지", basicResponse.message)
+//                    response.body -> 응답 코드 200번이어야 들어있다. (성공)
+//                    가입 실패 / 로그인 실패 -> 응답 코드 400 -> errorBody에서 따로 찾아야함. (실패)
+
+                    if (response.isSuccessful) {
+                        val basicResponse = response.body()!!
+                        Log.d("서버 메서지", basicResponse.message)
+                        Toast.makeText(mContext, basicResponse.message, Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+//                        어떤 이유던 성공이 아닌 상황
+                        val errorBodyStr = response.errorBody()!!.string()
+                        //단순 JSON 형태의 String으로 내려옴. => JSONObject 형태로 가공 필요.
+                        Log.d("에러경우", errorBodyStr)
+                        val jsonOj = JSONObject(errorBodyStr)
+                        val message = jsonOj.getString("message")
+                        //runOnUiThread 를 해주지 않아도 UI 접근 가능.
+                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show()
+                    }
+
 
                 }
 
