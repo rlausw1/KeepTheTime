@@ -58,6 +58,7 @@
             android:layout_gravity="center" >
 
             <ImageView
+                android:id="@+id/kakaoLoginBtn"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginRight="10dp"
