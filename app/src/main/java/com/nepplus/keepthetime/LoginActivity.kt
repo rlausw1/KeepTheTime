@@ -30,7 +30,7 @@ import java.util.*
 
 class LoginActivity : BaseActivity() {
 
-    lateinit var callbackManager : CallbackManager
+    lateinit var callbackManager: CallbackManager
 
     lateinit var binding: ActivityLoginBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,8 +65,7 @@ class LoginActivity : BaseActivity() {
                         Log.d("토큰", basicResponse.data.token)
 
                         ContextUtil.setToken(mContext, basicResponse.data.token)
-                    }
-                    else {
+                    } else {
 
                         val errorBodyStr = response.errorBody()!!.string()
                         val jsonObj = JSONObject(errorBodyStr)
@@ -100,27 +99,44 @@ class LoginActivity : BaseActivity() {
             UserApiClient.instance.loginWithKakaoAccount(mContext) { token, error ->
                 if (error != null) {
                     Log.e("카카오로그인", "로그인 실패", error)
-                }
-                else if (token != null) {
+                } else if (token != null) {
                     Log.i("카카오로그인", "로그인 성공 ${token.accessToken}")
 
                     UserApiClient.instance.me { user, error ->
                         if (error != null) {
                             Log.e("카카오로그인", "사용자 정보 요청 실패", error)
-                        }
-                        else if (user != null) {
-                            Log.i("카카오로그인", "사용자 정보 요청 성공" +
-                                    "\n회원번호: ${user.id}" +
-                                    "\n이메일: ${user.kakaoAccount?.email}" +
-                                    "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
-                                    "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}")
+                        } else if (user != null) {
+                            Log.i(
+                                "카카오로그인", "사용자 정보 요청 성공" +
+                                        "\n회원번호: ${user.id}" +
+                                        "\n이메일: ${user.kakaoAccount?.email}" +
+                                        "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
+                                        "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
+                            )
+
+//                            소셜로그인 API에 카카오 로그인
+                            apiService.postRequestSocialLogin(
+                                "kakao",
+                                user.id.toString(),
+                                user.kakaoAccount?.profile?.nickname!!).enqueue(object : Callback<BasicResponse> {
+                                override fun onResponse(
+                                    call: Call<BasicResponse>,
+                                    response: Response<BasicResponse>
+                                ) {
+                                    val basicResponse = response.body()!!
+                                    ContextUtil.setToken(mContext, basicResponse.data.token)
+                                }
+
+                                override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                                }
+
+                            })
                         }
                     }
                 }
             }
 
         }
-
 
 
 //        페북 로그인 버튼 클릭 이벤트
@@ -134,66 +150,85 @@ class LoginActivity : BaseActivity() {
 
 //            커스텀 버튼에, 로그인 하고 돌아온 callback을 따로 설정정
 
-            LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-                override fun onSuccess(result: LoginResult?) {
+            LoginManager.getInstance()
+                .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+                    override fun onSuccess(result: LoginResult?) {
 
-                    Log.d("로그인성공", "우리가만든버튼성공")
+                        Log.d("로그인성공", "우리가만든버튼성공")
 
-                    //페이스북에 접근할 수 있는 토큰이 생겨 있다. => 활용.
+                        //페이스북에 접근할 수 있는 토큰이 생겨 있다. => 활용.
 //                    나의 (로그인한사람) 정보 (GraphRequest) 를 받아오는데 활용.
 
-                    val graphRequest = GraphRequest.newMeRequest(result?.accessToken, object : GraphRequest.GraphJSONObjectCallback {
-                        override fun onCompleted(jsonObj : JSONObject?, response: GraphResponse?) {
+                        val graphRequest = GraphRequest.newMeRequest(
+                            result?.accessToken,
+                            object : GraphRequest.GraphJSONObjectCallback {
+                                override fun onCompleted(
+                                    jsonObj: JSONObject?,
+                                    response: GraphResponse?
+                                ) {
 
-                            Log.d("내정보내용", jsonObj.toString())
+                                    Log.d("내정보내용", jsonObj.toString())
 
-                            val name = jsonObj!!.getString("name")
-                            val id = jsonObj.getString("id")
+                                    val name = jsonObj!!.getString("name")
+                                    val id = jsonObj.getString("id")
 
 //                            가입한 회원 이름 => 우리 서버에 사용자 이름으로 (닉네임으로) 저장
-                            Log.d("이름", name)
+                                    Log.d("이름", name)
 //                            페북에서 사용자를 구별하는 고유번호. => 우리 서버에 같이 저장.  회원가입 or 로그인 근거자료로 활용
-                            Log.d("id값", id)
+                                    Log.d("id값", id)
 
-                             apiService.postRequestSocialLogin("facebook", id, name).enqueue(object : Callback<BasicResponse> {
-                                override fun onResponse(
-                                    call: Call<BasicResponse>,
-                                    response: Response<BasicResponse>
-                                ) {
-                                    val basicResponse = response.body()!!
+                                    apiService.postRequestSocialLogin("facebook", id, name)
+                                        .enqueue(object : Callback<BasicResponse> {
+                                            override fun onResponse(
+                                                call: Call<BasicResponse>,
+                                                response: Response<BasicResponse>
+                                            ) {
+                                                val basicResponse = response.body()!!
 
-                                    Toast.makeText(mContext, basicResponse.message, Toast.LENGTH_SHORT).show()
-                                    Log.d("API서버가 준 토큰값", basicResponse.data.token)
+                                                Toast.makeText(
+                                                    mContext,
+                                                    basicResponse.message,
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                Log.d("API서버가 준 토큰값", basicResponse.data.token)
 
 //                                    ContextUtil 등으로 SharedPreferences로 토큰값 저장.
+                                                ContextUtil.setToken(
+                                                    mContext,
+                                                    basicResponse.data.token
+                                                )
 
 //                                    메인화면으로 이동.
 
-                                }
+                                            }
 
-                                override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                                            override fun onFailure(
+                                                call: Call<BasicResponse>,
+                                                t: Throwable
+                                            ) {
 
+                                            }
+
+                                        })
                                 }
 
                             })
-                        }
-
-                    })
 
 //                    위에서 정리한 내용을 들고, 내 정보를 실제로 요청.
-                    graphRequest.executeAsync()
+                        graphRequest.executeAsync()
 
-                }
+                    }
 
-                override fun onCancel() {
-                }
+                    override fun onCancel() {
+                    }
 
-                override fun onError(error: FacebookException?) {
-                }
+                    override fun onError(error: FacebookException?) {
+                    }
 
-            })
+                })
 
-           LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"))
+            LoginManager.getInstance()
+                .logInWithReadPermissions(this, Arrays.asList("public_profile"))
         }
 
 //        binding.loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult?> {
@@ -217,22 +252,19 @@ class LoginActivity : BaseActivity() {
     }
 
 
-
-
-
-        override fun setValues() {
+    override fun setValues() {
 
 //        카톡으로 받은 코드 복붙 => 키 해쉬값 추출
-            val info = packageManager.getPackageInfo(
-                "com.nepplus.keepthetime",
-                PackageManager.GET_SIGNATURES
-            )
-            for (signature in info.signatures) {
-                val md: MessageDigest = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT))
-            }
+        val info = packageManager.getPackageInfo(
+            "com.nepplus.keepthetime",
+            PackageManager.GET_SIGNATURES
+        )
+        for (signature in info.signatures) {
+            val md: MessageDigest = MessageDigest.getInstance("SHA")
+            md.update(signature.toByteArray())
+            Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT))
         }
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         callbackManager.onActivityResult(requestCode, resultCode, data)
@@ -240,4 +272,4 @@ class LoginActivity : BaseActivity() {
     }
 
 
-    }
+}
