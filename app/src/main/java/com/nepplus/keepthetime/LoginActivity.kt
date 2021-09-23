@@ -38,6 +38,11 @@ class LoginActivity : BaseActivity() {
 
     override fun setupEvents() {
 
+        binding.signUpBtn.setOnClickListener {
+            val myIntent = Intent(mContext, SignUpActivity::class.java)
+            startActivity(myIntent)
+        }
+
         binding.kakaoLoginBtn.setOnClickListener {
 
 //            카카오계정으로 로그인
