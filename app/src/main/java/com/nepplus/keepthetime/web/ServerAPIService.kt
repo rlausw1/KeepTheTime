@@ -29,4 +29,6 @@ interface ServerAPIService {
         @Field("uid") id: String,
         @Field("nick_name") name: String  ) : Call<BasicResponse>
 
+
+
 }
