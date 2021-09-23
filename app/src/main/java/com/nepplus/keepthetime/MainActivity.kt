@@ -1,5 +1,6 @@
 package com.nepplus.keepthetime
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -16,6 +17,11 @@ class MainActivity : BaseActivity() {
     }
 
     override fun setupEvents() {
+
+        binding.addAppoinmentBtn.setOnClickListener {
+            val myIntent = Intent(mContext, EditAppointmentActivity::class.java)
+            startActivity(myIntent)
+        }
 
 
 

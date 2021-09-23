@@ -210,12 +210,13 @@ class LoginActivity : BaseActivity() {
 
 
 //                                    메인화면으로 이동.
+                                                val myIntent = Intent(mContext, MainActivity::class.java)
+                                                startActivity(myIntent)
+                                                finish()
 
                                             }
 
-                                            override fun onFailure(
-                                                call: Call<BasicResponse>,
-                                                t: Throwable
+                                            override fun onFailure(call: Call<BasicResponse>, t: Throwable
                                             ) {
 
                                             }
