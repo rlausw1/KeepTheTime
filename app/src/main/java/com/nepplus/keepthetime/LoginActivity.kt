@@ -21,6 +21,7 @@ import com.facebook.login.widget.LoginButton
 import com.kakao.sdk.user.UserApiClient
 import com.nepplus.keepthetime.datas.BasicResponse
 import com.nepplus.keepthetime.utils.ContextUtil
+import com.nepplus.keepthetime.utils.GlobalData
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -67,6 +68,10 @@ class LoginActivity : BaseActivity() {
                         ContextUtil.setToken(mContext, basicResponse.data.token)
 
 //                        Toast.makeText(mContext, basicResponse.data.user.email, Toast.LENGTH_SHORT).show()
+//                        로그인한사람이 누구인지 => GlobalData 클래스에 저장.
+                        GlobalData.loginUser = basicResponse.data.user
+
+
                     } else {
 
                         val errorBodyStr = response.errorBody()!!.string()
@@ -127,6 +132,8 @@ class LoginActivity : BaseActivity() {
                                 ) {
                                     val basicResponse = response.body()!!
                                     ContextUtil.setToken(mContext, basicResponse.data.token)
+                                    GlobalData.loginUser = basicResponse.data.user
+
                                 }
 
                                 override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
@@ -199,6 +206,8 @@ class LoginActivity : BaseActivity() {
                                                     mContext,
                                                     basicResponse.data.token
                                                 )
+                                                GlobalData.loginUser = basicResponse.data.user
+
 
 //                                    메인화면으로 이동.
 
