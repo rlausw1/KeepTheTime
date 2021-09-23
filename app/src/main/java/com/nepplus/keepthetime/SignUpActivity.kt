@@ -2,8 +2,13 @@ package com.nepplus.keepthetime
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import com.nepplus.keepthetime.databinding.ActivitySignUpBinding
+import com.nepplus.keepthetime.datas.BasicResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SignUpActivity : BaseActivity() {
 
@@ -23,7 +28,21 @@ class SignUpActivity : BaseActivity() {
             val inputPw = binding.pwEdt.text.toString()
             val inputNick = binding.nicknameEdt.text.toString()
 
-            apiService.putRequestSignUp(inputEmail, inputPw, inputNick)
+            apiService.putRequestSignUp(inputEmail, inputPw, inputNick).enqueue(object : Callback<BasicResponse> {
+                override fun onResponse(
+                    call: Call<BasicResponse>,
+                    response: Response<BasicResponse>
+                ) {
+
+                    val basicResponse = response.body()!!
+                    Log.d("서버 메서지", basicResponse.message)
+
+                }
+
+                override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                }
+
+            })
 
         }
 
