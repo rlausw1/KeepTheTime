@@ -70,6 +70,9 @@ class LoginActivity : BaseActivity() {
 //                        Toast.makeText(mContext, basicResponse.data.user.email, Toast.LENGTH_SHORT).show()
 //                        로그인한사람이 누구인지 => GlobalData 클래스에 저장.
                         GlobalData.loginUser = basicResponse.data.user
+                        moveToMain()
+
+
 
 
                     } else {
@@ -133,6 +136,7 @@ class LoginActivity : BaseActivity() {
                                     val basicResponse = response.body()!!
                                     ContextUtil.setToken(mContext, basicResponse.data.token)
                                     GlobalData.loginUser = basicResponse.data.user
+                                    moveToMain()
 
                                 }
 
@@ -210,10 +214,11 @@ class LoginActivity : BaseActivity() {
 
 
 //                                    메인화면으로 이동.
-                                                val myIntent = Intent(mContext, MainActivity::class.java)
-                                                startActivity(myIntent)
-                                                finish()
+//                                                val myIntent = Intent(mContext, MainActivity::class.java)
+//                                                startActivity(myIntent)
+//                                                finish()
 
+                                               moveToMain()
                                             }
 
                                             override fun onFailure(call: Call<BasicResponse>, t: Throwable
@@ -281,6 +286,12 @@ class LoginActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         callbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    fun moveToMain() {
+        val myIntent = Intent(mContext, MainActivity::class.java)
+        startActivity(myIntent)
+        finish()
     }
 
 

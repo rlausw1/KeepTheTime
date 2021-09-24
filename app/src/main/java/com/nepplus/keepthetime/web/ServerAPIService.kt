@@ -33,7 +33,9 @@ interface ServerAPIService {
         @Field("datetime") datetime:String,
         @Field("place") placeName: String,
         @Field("latitude") lat: Double,
-        @Field("longitude") lng: Double
+        @Field("longitude") lng: Double,
+
+
     ) : Call<BasicResponse>
 
     //    GET - 약속 목록 가져오기
