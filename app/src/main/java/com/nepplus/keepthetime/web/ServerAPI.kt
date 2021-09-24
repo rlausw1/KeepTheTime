@@ -44,7 +44,6 @@ class ServerAPI {
 
                 val myClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
-
 //                기본 클라이언트 => 직접 만든 client 를 이용해서 통신하게 하자.
 
                 retrofit = Retrofit.Builder()
