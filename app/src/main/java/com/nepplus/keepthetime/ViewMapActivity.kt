@@ -2,6 +2,8 @@ package com.nepplus.keepthetime
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapFragment
@@ -52,8 +54,11 @@ class ViewMapActivity : BaseActivity() {
 
             val infoWindow = InfoWindow()
             infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(mContext) {
-                override fun getText(p0: InfoWindow): CharSequence {
-                    return mAppointmentData.placeName
+                override fun getContentView(p0: InfoWindow): View {
+
+                    val myView = LayoutInflater.from(mContext).inflate(R.layout.my_custom_info_window, null)
+
+                    return  myView
                 }
 
             }
