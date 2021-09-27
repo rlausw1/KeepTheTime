@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapFragment
@@ -53,10 +54,16 @@ class ViewMapActivity : BaseActivity() {
             //            기본적인 모양의 정보창 띄워주기 (마커에 연결)
 
             val infoWindow = InfoWindow()
-            infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(mContext) {
+            infoWindow.adapter = object : InfoWindow.DefaultViewAdapter(mContext) {
                 override fun getContentView(p0: InfoWindow): View {
 
                     val myView = LayoutInflater.from(mContext).inflate(R.layout.my_custom_info_window, null)
+
+                    val placeNameTxt = myView.findViewById<TextView>(R.id.placeNameTxt)
+                    val arrivalTimeTxt = myView.findViewById<TextView>(R.id.arrivalTimeTxt)
+
+                    placeNameTxt.text = mAppointmentData.placeName
+                    arrivalTimeTxt.text = "??시간 ?분 소요예상"
 
                     return  myView
                 }
