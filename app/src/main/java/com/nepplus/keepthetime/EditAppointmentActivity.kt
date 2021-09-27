@@ -14,6 +14,7 @@ import com.naver.maps.map.CameraUpdate
 
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.OverlayImage
 import com.nepplus.keepthetime.databinding.ActivityEditAppointmentBinding
 import com.nepplus.keepthetime.datas.BasicResponse
 import com.nepplus.keepthetime.utils.ContextUtil
@@ -192,6 +193,8 @@ class EditAppointmentActivity : BaseActivity() {
 
             //선택된 위치를 보여줄 마커 하나만 생성.
             val selectedPointMarker = Marker()
+            selectedPointMarker.icon = OverlayImage.fromResource(R.drawable.red_marker)
+
 
             it.setOnMapClickListener { pointF, latLng ->
                 Toast.makeText(
