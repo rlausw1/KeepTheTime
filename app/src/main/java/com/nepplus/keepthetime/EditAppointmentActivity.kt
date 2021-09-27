@@ -13,6 +13,7 @@ import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 
 import com.naver.maps.map.MapFragment
+import com.naver.maps.map.overlay.Marker
 import com.nepplus.keepthetime.databinding.ActivityEditAppointmentBinding
 import com.nepplus.keepthetime.datas.BasicResponse
 import com.nepplus.keepthetime.utils.ContextUtil
@@ -188,6 +189,10 @@ class EditAppointmentActivity : BaseActivity() {
             uiSettings.isCompassEnabled = true
             uiSettings.isScaleBarEnabled = false
 
+
+            //선택된 위치를 보여줄 마커 하나만 생성.
+            val selectedPointMarker = Marker()
+
             it.setOnMapClickListener { pointF, latLng ->
                 Toast.makeText(
                     mContext,
@@ -197,6 +202,13 @@ class EditAppointmentActivity : BaseActivity() {
 
                 mSelectedLat = latLng.latitude
                 mSelectedLng = latLng.longitude
+
+                //좌표를 받아서 => 미리 만들어둔 마커의 좌표로 연결. => 맵에 띄우자.
+                selectedPointMarker.position = LatLng(mSelectedLat, mSelectedLng)
+
+                selectedPointMarker.map = it
+
+
             }
         }
 
