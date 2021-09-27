@@ -1,6 +1,7 @@
 package com.nepplus.keepthetime.datas
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 class AppointmentData (
     var id: Int,
@@ -16,5 +17,5 @@ class AppointmentData (
     var createdAt: String,
     var user: UserData
 
-        ){
+        ) : Serializable{
 }

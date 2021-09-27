@@ -2,8 +2,12 @@ package com.nepplus.keepthetime
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.nepplus.keepthetime.datas.AppointmentData
 
 class ViewMapActivity : BaseActivity() {
+
+    lateinit var mAppointmentData : AppointmentData
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_map)
@@ -16,5 +20,8 @@ class ViewMapActivity : BaseActivity() {
     }
 
     override fun setValues() {
+
+        mAppointmentData = intent.getSerializableExtra("appointment") as AppointmentData
+
     }
 }
