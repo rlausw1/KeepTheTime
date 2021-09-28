@@ -2,7 +2,9 @@ package com.nepplus.keepthetime
 
 import android.content.Context
 import android.os.Bundle
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.nepplus.keepthetime.web.ServerAPI
 import com.nepplus.keepthetime.web.ServerAPIService
 import retrofit2.Retrofit
@@ -25,9 +27,27 @@ abstract class BaseActivity : AppCompatActivity() {
         retrofit = ServerAPI.getRetrofit(mContext)
         apiService = retrofit.create(ServerAPIService :: class.java)
 
+        supportActionBar?.let {
+            setCustomActionBar()
+        }
+
+
 
 
     }
     abstract fun setupEvents()
     abstract fun setValues()
+
+    fun setCustomActionBar() {
+        val defActionBar = supportActionBar!!
+
+        defActionBar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+        defActionBar.setCustomView(R.layout.my_custom_action_bar)
+
+//        양옆없애주는거
+        val toolBar = defActionBar.customView.parent as Toolbar
+        toolBar.setContentInsetsAbsolute(0,0)
+
+    }
+
 }
