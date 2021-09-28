@@ -69,6 +69,34 @@ class LoginActivity : BaseActivity() {
                             val jsonObj = JSONObject(mNaverLoginModule.requestApi(mContext, accessToken,url ))
                             Log.d("네이버로그인내정보", jsonObj.toString())
 
+                            val responseObj = jsonObj.getJSONObject("response")
+                            val uid = responseObj.getString("id")
+                            val name = responseObj.getString("name")
+
+                            apiService.postRequestSocialLogin(
+                                "naver",uid,name
+                            ).enqueue(object : retrofit2.Callback<BasicResponse> {
+                                override fun onResponse(
+                                    call: Call<BasicResponse>,
+                                    response: Response<BasicResponse>
+                                ) {
+
+//                                    소셜 로그인 마무리 -> 토큰 설정, Global 로그인 사용
+
+                                  val basicResponse = response.body()!!
+                                    ContextUtil.setToken(mContext, basicResponse.data.token)
+                                        GlobalData.loginUser = basicResponse.data.user
+                                        moveToMain()
+
+
+                                    }
+
+                                override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+
+                                }
+
+                            })
+
                         }.start()
 
 
