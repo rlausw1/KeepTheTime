@@ -2,6 +2,8 @@ package com.nepplus.keepthetime
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -19,6 +21,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private lateinit var retrofit: Retrofit
     lateinit var apiService: ServerAPIService
+
+    //    액션바에 있는 UI요소들을 상속시켜주자.
+    lateinit var profileImg : ImageView
+    lateinit var titleTxt : TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +54,9 @@ abstract class BaseActivity : AppCompatActivity() {
 //        양옆없애주는거
         val toolBar = defActionBar.customView.parent as Toolbar
         toolBar.setContentInsetsAbsolute(0,0)
+
+        profileImg = defActionBar.customView.findViewById(R.id.profileImg)
+        titleTxt = defActionBar.customView.findViewById(R.id.titleTxt)
 
     }
 
