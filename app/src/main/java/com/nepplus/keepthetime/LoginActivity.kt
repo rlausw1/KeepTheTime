@@ -81,12 +81,12 @@ class LoginActivity : BaseActivity() {
                                     response: Response<BasicResponse>
                                 ) {
 
-//                                    소셜 로그인 마무리 -> 토큰 설정, Global 로그인 사용
+//                                    소셜 로그인 마무리 -> 토큰,Globaldata 로그인사용자 -> 메인화면으로 이동.
 
-                                  val basicResponse = response.body()!!
+                                    val basicResponse = response.body()!!
                                     ContextUtil.setToken(mContext, basicResponse.data.token)
-                                        GlobalData.loginUser = basicResponse.data.user
-                                        moveToMain()
+                                    GlobalData.loginUser = basicResponse.data.user
+                                    moveToMain()
 
 
                                     }
