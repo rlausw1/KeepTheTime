@@ -53,6 +53,13 @@ class MySettingActivity : BaseActivity() {
                         response: Response<BasicResponse>
                     ) {
                         if (response.isSuccessful) {
+                            //                            내 수정된 정보 파싱. => 로그인한 사용자의 정보로 갱신.
+                            val basicResponse = response.body()!!
+
+                            GlobalData.loginUser = basicResponse.data.user
+
+                            setUserInfo()
+
 
                         }
                     }
@@ -76,6 +83,12 @@ class MySettingActivity : BaseActivity() {
     override fun setValues() {
 
         titleTxt.text = "내 정보 설정"
+
+        setUserInfo()
+    }
+
+    fun setUserInfo() {
+
         binding.nicknameTxt.text =  GlobalData.loginUser!!.nickName
 
         binding.nicknameTxt.text = GlobalData.loginUser!!.nickName
