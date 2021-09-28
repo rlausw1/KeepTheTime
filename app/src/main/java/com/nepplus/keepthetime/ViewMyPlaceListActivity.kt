@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.nepplus.keepthetime.adapters.MyPlaceRecyclerAdapter
 import com.nepplus.keepthetime.databinding.ActivityViewMyPlaceListBinding
 import com.nepplus.keepthetime.datas.BasicResponse
 import com.nepplus.keepthetime.datas.PlaceData
@@ -17,6 +19,7 @@ class ViewMyPlaceListActivity : BaseActivity() {
     lateinit var binding: ActivityViewMyPlaceListBinding
 
     val mMyPlaceList = ArrayList<PlaceData>()
+    lateinit var mPlaceAdapter : MyPlaceRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +41,11 @@ class ViewMyPlaceListActivity : BaseActivity() {
         titleTxt.text = "내가 자주 쓰는 출발장소들"
         addBtn.visibility = View.VISIBLE
 
+        binding.myPlaceRecyclerView.layoutManager = LinearLayoutManager(mContext)
+
+        mPlaceAdapter = MyPlaceRecyclerAdapter(mContext, mMyPlaceList)
+        binding.myPlaceRecyclerView.adapter = mPlaceAdapter
+
     }
 
     override fun onResume() {
@@ -58,6 +66,7 @@ class ViewMyPlaceListActivity : BaseActivity() {
                     mMyPlaceList.clear()
 
                     mMyPlaceList.addAll( basicResponse.data.places )
+                    mPlaceAdapter.notifyDataSetChanged()
 
 
                 }
