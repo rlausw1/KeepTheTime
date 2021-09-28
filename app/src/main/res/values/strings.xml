@@ -2,5 +2,8 @@
     <string name="app_name">KeepTheTime</string>
     <string name="facebook_app_id">277514377332115</string>
     <string name="fb_login_protocol_scheme">fb277514377332115</string>
+    <string name="naver_client_id">Sems4Eccnlb1OD55gTIQ</string>
+    <string name="naver_secret_key">wZEHFZRdWo</string>
+    <string name="naver_client_name">약속지킴</string>
 
 </resources>

@@ -22,6 +22,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.nepplus.keepthetime.datas.BasicResponse
 import com.nepplus.keepthetime.utils.ContextUtil
 import com.nepplus.keepthetime.utils.GlobalData
+import com.nhn.android.naverlogin.OAuthLogin
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,6 +33,7 @@ import java.util.*
 class LoginActivity : BaseActivity() {
 
     lateinit var callbackManager: CallbackManager
+    lateinit var mNaverLoginModule : OAuthLogin
 
     lateinit var binding: ActivityLoginBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -278,6 +280,13 @@ class LoginActivity : BaseActivity() {
 
 
     override fun setValues() {
+
+        mNaverLoginModule = OAuthLogin.getInstance()
+        mNaverLoginModule.init(mContext,
+            getString(R.string.naver_client_id),
+            getString(R.string.naver_secret_key),
+            getString(R.string.naver_client_name)
+        )
 
 //        카톡으로 받은 코드 복붙 => 키 해쉬값 추출
         val info = packageManager.getPackageInfo(
