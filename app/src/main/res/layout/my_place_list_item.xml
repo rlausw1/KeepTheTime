@@ -4,7 +4,9 @@
     android:orientation="horizontal"
     android:padding="15dp"
     android:gravity="center"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/backgroundLayout"
+    >
 
     <TextView
         android:id="@+id/placeNameTxt"
