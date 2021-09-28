@@ -1,6 +1,7 @@
 package com.nepplus.keepthetime.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.nepplus.keepthetime.R
+import com.nepplus.keepthetime.ViewMapActivity
 import com.nepplus.keepthetime.datas.AppointmentData
 
 class AppointmentRecyclerAdapter(
@@ -39,6 +41,12 @@ class AppointmentRecyclerAdapter(
 
         val data = mList[position]
         holder.bind(data)
+
+        holder.viewPlaceMapBtn.setOnClickListener {
+            val myIntent = Intent(mContext, ViewMapActivity::class.java)
+            myIntent.putExtra("appointment", data)
+            mContext.startActivity(myIntent)
+        }
 
     }
 
