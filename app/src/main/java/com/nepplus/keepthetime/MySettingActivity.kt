@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.nepplus.keepthetime.databinding.ActivityMySettingBinding
+import com.nepplus.keepthetime.utils.GlobalData
 
 class MySettingActivity : BaseActivity() {
 
@@ -23,6 +24,7 @@ class MySettingActivity : BaseActivity() {
     override fun setValues() {
 
         titleTxt.text = "내 정보 설정"
+        binding.nicknameTxt.text =  GlobalData.loginUser!!.nickName
 
     }
 }
