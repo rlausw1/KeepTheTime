@@ -1,7 +1,9 @@
 package com.nepplus.keepthetime
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.nepplus.keepthetime.databinding.ActivityViewMyPlaceListBinding
 
@@ -17,11 +19,17 @@ class ViewMyPlaceListActivity : BaseActivity() {
     }
 
     override fun setupEvents() {
+        addBtn.setOnClickListener {
+            val myIntent = Intent(mContext, EditMyPlaceActivity::class.java)
+            startActivity(myIntent)
+
+        }
 
     }
 
     override fun setValues() {
         titleTxt.text = "내가 자주 쓰는 출발장소들"
+        addBtn.visibility = View.VISIBLE
 
     }
 }
