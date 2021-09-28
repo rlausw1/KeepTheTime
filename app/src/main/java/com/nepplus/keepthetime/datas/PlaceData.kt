@@ -11,5 +11,4 @@ class PlaceData(
     var longitude: Double,
     @SerializedName("is_primary")
     var isPrimary: Boolean) {
-} {
 }
