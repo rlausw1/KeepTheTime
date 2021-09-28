@@ -20,6 +20,12 @@ class AppointmentRecyclerAdapter(
         val dateTimeTxt = view.findViewById<TextView>(R.id.dateTimeTxt)
         val placeNameTxt = view.findViewById<TextView>(R.id.placeNameTxt)
         val viewPlaceMapBtn = view.findViewById<ImageView>(R.id.viewPlaceMapBtn)
+
+        fun bind(data : AppointmentData) {
+            titleTxt.text = data.title
+            dateTimeTxt.text = data.datetime
+            placeNameTxt.text = data.placeName
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppointmentViewHolder {
@@ -30,6 +36,10 @@ class AppointmentRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: AppointmentViewHolder, position: Int) {
+
+        val data = mList[position]
+        holder.bind(data)
+
     }
 
     override fun getItemCount(): Int {
