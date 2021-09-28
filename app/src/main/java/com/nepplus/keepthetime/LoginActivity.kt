@@ -58,6 +58,7 @@ class LoginActivity : BaseActivity() {
 //                        네이버 로그인 성공 시 그 계정의 토큰값 추출
 
                         val accessToken = mNaverLoginModule.getAccessToken(mContext)
+                        Log.d("네이버토큰값", accessToken)
 
 
 
